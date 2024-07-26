@@ -6,8 +6,9 @@
 const char* ssid = "🚀 NASA 2GHZ 🚀";
 const char* password = "sRTR7s97E5d2";
 
-// Set GPIO pin for the relay
-const int relayPin = 5;
+// Set GPIO pin for the Hall Sensor
+const int ledPin = 4;
+const int sensorPin = 5;
 
 // Create an instance of the web server on port 80
 WebServer server(80);
@@ -16,16 +17,13 @@ WebSocketsServer webSocket(81);
 // Track the relay state
 bool relayState = false;
 void setupPins(){
-  pinMode(5, INPUT_PULLUP); //The pins are set INPUT by default
+  pinMode(ledPin, OUTPUT);
+  pinMode(sensorPin, INPUT_PULLUP); //The pins are set INPUT by default
 }
 
 void setup() {
   Serial.begin(115200);
   setupPins();
-
-  // Initialize the relay pin as an output
-  pinMode(relayPin, OUTPUT);
-  digitalWrite(relayPin, LOW); // Turn off the relay initially
 
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
@@ -42,7 +40,7 @@ void setup() {
 
   // Define the web server routes
   server.on("/", handleRoot);
-  server.on("/toggle", handleToggle);
+  //server.on("/toggle", handleToggle);
 
   // Start the web server
   server.begin();
@@ -58,20 +56,21 @@ void loop() {
   server.handleClient();
   webSocket.loop();
 
-  int e2 = digitalRead(5);
+  int e2 = digitalRead(sensorPin);
   if(e2 > 0 ){
-
+digitalWrite(ledPin,LOW);
  sendMessageToClients(">0");
 }else{
+  digitalWrite(ledPin,HIGH);
   sendMessageToClients("<0");
 }
 }
 
-void handleToggle() {
-  relayState = !relayState;
-  digitalWrite(relayPin, relayState ? HIGH : LOW);
-  server.send(200, "text/plain", relayState ? "ON" : "OFF");
-}
+// void handleToggle() {
+//   relayState = !relayState;
+//   digitalWrite(relayPin, relayState ? HIGH : LOW);
+//   server.send(200, "text/plain", relayState ? "ON" : "OFF");
+// }
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length) {
   switch(type) {

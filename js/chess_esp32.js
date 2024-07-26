@@ -76,7 +76,7 @@ createInitialState()
 
 ws.onmessage = function (event) {
     //console.log("data", event.data)
-    if (event.data == ">0") {
+    if (event.data == "<0") {
         console.log("piece PRESSED")
     }
     // else if (event.data == "<0") {
