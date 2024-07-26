@@ -1,4 +1,4 @@
-alert("code running")
+var ws = new WebSocket('ws://192.168.1.154/:81');
 const board = document.getElementById('board-play-computer');
 
 // Initial positions for a chess game
@@ -72,6 +72,21 @@ function moveKnight() {
 // Initialize the board
 createChessBoard();
 createInitialState()
+
+
+ws.onmessage = function (event) {
+    console.log(event, event)
+    // if (event.data === 'ButtonPressed') {
+    //     var relayButton = document.getElementById('relayButton');
+    //     if (relayButton.innerHTML === 'Relay ON') {
+    //         relayButton.style.backgroundColor = 'red';
+    //         relayButton.innerHTML = 'Relay OFF';
+    //     } else {
+    //         relayButton.style.backgroundColor = 'green';
+    //         relayButton.innerHTML = 'Relay ON';
+    //     }
+    // }
+};
 
 // setTimeout(() => {
 //     moveKnight();
