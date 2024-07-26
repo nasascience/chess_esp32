@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet"
+        href="https://www.chess.com/chesscom-artifacts/packages/@chesscom/chessboard-layout/1.8.0/style.client.css" />
+    <link rel="stylesheet"
+        href="https://www.chess.com/chesscom-artifacts/packages/@chesscom/play-computer-client/2.5.0/play-computer-vendors.client.css" />
+    <link rel="stylesheet" href="./css/pieces.css">
+    <style>
+        #board-play-computer,
+        .fade-in-overlay {
+            background-image: url(https://images.chesscomfiles.com/chess-themes/boards/icy_sea/200.png);
+        }
+    </style>
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script> -->
+</head>
+
+<body>
+    <div id="board-layout-chessboard" class="board-layout-chessboard board-board">
+        <wc-chess-board class="board" id="board-play-computer"></wc-chess-board>
+    </div>
+    <script src="./js/chess.js" type="module"></script>
+</body>
+
+</html>
