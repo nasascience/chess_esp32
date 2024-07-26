@@ -75,7 +75,11 @@ createInitialState()
 
 
 ws.onmessage = function (event) {
-    console.log(event, event)
+    if (event.data == ">0") {
+        console.log("piece PRESSED")
+    } else if (event.data == ">0") {
+        console.log("piece NOT pressed")
+    }
     // if (event.data === 'ButtonPressed') {
     //     var relayButton = document.getElementById('relayButton');
     //     if (relayButton.innerHTML === 'Relay ON') {

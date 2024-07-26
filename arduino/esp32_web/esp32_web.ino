@@ -60,9 +60,10 @@ void loop() {
 
   int e2 = digitalRead(5);
   if(e2 > 0 ){
- webSocket.sendTXT(1,">0");
+
+ sendMessageToClients(">0");
 }else{
-  webSocket.sendTXT(2,"<0");
+  sendMessageToClients("<0");
 }
 }
 
@@ -74,14 +75,35 @@ void handleToggle() {
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length) {
   switch(type) {
-    case WStype_TEXT:
-      if (strcmp((char*)payload, "toggle") == 0) {
-        relayState = !relayState;
-        String message = relayState ? "ON" : "OFF";
-        webSocket.sendTXT(num, message);
+    case WStype_DISCONNECTED:
+      Serial.printf("Client %u disconnected!\n", num);
+      break;
+    case WStype_CONNECTED:
+      {
+        IPAddress ip = webSocket.remoteIP(num);
+        Serial.printf("Client %u connected from %s\n", num, ip.toString().c_str());
       }
       break;
+    case WStype_TEXT:
+      Serial.printf("Client %u sent text: %s\n", num, payload);
+      // Example: Toggle relay state based on received message
+      if (strcmp((char *)payload, "toggle") == 0) {
+        // Send a message to all clients
+        webSocket.sendTXT(num, "ON");
+      }
+      break;
+    case WStype_ERROR:
+      Serial.printf("Error on WebSocket connection %u\n", num);
+      break;
+    default:
+      break;
   }
+  
+}
+
+// Function to send a message to all connected clients
+void sendMessageToClients(const String &message) {
+  webSocket.broadcastTXT(message);
 }
 
 void handleRoot() {
