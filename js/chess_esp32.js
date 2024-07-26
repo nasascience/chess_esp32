@@ -1,4 +1,4 @@
-var ws = new WebSocket('ws://192.168.1.154/:81');
+var ws = new WebSocket('ws://192.168.1.154:81');
 const board = document.getElementById('board-play-computer');
 
 // Initial positions for a chess game
